@@ -1,0 +1,91 @@
+<h1>
+    FabricJS imageHelper</h1>
+
+<div id="canvasContainer">
+    <canvas id="c" width="1920" height="600"></canvas>
+</div>
+<br>
+<label>Zoom</label>
+<input type="range" min="100" max="2000" value="720" id="img-width"></input>
+<label>paddingX</label>
+<input type="range" min="10" max="200" value="720" id="img-offset-x"></input>
+<label>paddingY</label>
+<input type="range" min="10" max="200" value="720" id="img-offset-y"></input>
+<script src='./fabric.min.js'></script>
+
+<script>
+    // Copy this helper to annotation.js 
+    (function() {
+        var canvas = this.__canvas = new fabric.Canvas('c');
+        fabric.Object.prototype.transparentCorners = false;
+
+        fabric.Image.fromURL('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6kVcI5kF_5Ov2kE392lRhbsn5Y_RGfrapvffgew6MDZWH1VgR', function(img) {
+            
+			img.scale(1);
+			
+            var patternSourceCanvas = new fabric.StaticCanvas();
+
+            var pattern = new fabric.Pattern({
+                source: function() {
+                    patternSourceCanvas.setDimensions({
+                        width: img.getScaledWidth(),
+                        height: img.getScaledHeight()
+                    });
+					
+					patternSourceCanvas.add(img);
+                    patternSourceCanvas.renderAll();
+                    return patternSourceCanvas.getElement();
+                },
+                repeat: 'no-repeat'
+            });
+			
+            var rect = new fabric.Rect({
+                left: 0,
+                top: 0,
+                width: img.width,
+                height: img.height,
+                fill: pattern,
+                objectCaching: false
+            });
+			
+			rect.zoom = function(ratio){
+				img.scaleToWidth(ratio);
+			}
+			
+			rect.pan = function(panx, pany){
+				pattern.offsetX = panx;
+				//pattern.offsetY = pany;
+			}
+			
+            canvas.add(rect);
+//			canvas.requestRenderAll();
+        });
+		document.getElementById('img-width').oninput = function() { 
+				var objs = canvas.getObjects();
+				if (objs.length > 0) {
+					 img = objs[0];
+					 img.zoom(parseInt(this.value, 10)); 
+					 canvas.requestRenderAll();
+				 }
+             };
+			 
+		document.getElementById('img-offset-x').oninput = function() {
+			var objs = canvas.getObjects();
+			if (objs.length > 0) {
+				img = objs[0];
+				img.pan(parseInt(this.value, 10), 0);
+				canvas.requestRenderAll();
+			}
+		};
+		
+		document.getElementById('img-offset-y').oninput = function() {
+			var objs = canvas.getObjects();
+			if (objs.length > 0) {
+				img = objs[0];
+				img.pan(parseInt(0, this.value, 10));
+				canvas.requestRenderAll();
+			}
+		};
+		
+    })();
+</script>
