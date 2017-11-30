@@ -1,0 +1,101 @@
+         
+//init
+icoTransaction = new ICOTransaction();
+icoTransaction.init=({"Id":8,"TotalCoin":500000.000000000000000000,"SoldCoin":0.000000000000000000,"TimeICO":"\/Date(1512054000000)\/","TimeBuyICO":"\/Date(1512054000000)\/","OpenBuyTime":2,"OpenICOTime":false,"Price":1.03000,"Limit":200,"TimeLeft":27580.554667}, {"BTC":0.00000000,"ETH":0.28631236,"UCH":0.00000000,"USD":0.00000000,"BTCAddress":"1Ek5QXamaUDNrzEu6zcSkQKV4aJtT2n3NY","ETHAddress":"0x67aaea012efc0c9a3fdd3aa44971580e34853ef9","UCHAddress":"Ua4yV8fbjRsJsCUMwAPPem9b3E5iFV18JH","SecondPass":false})
+//SHOW DIALOG
+var datapost = {};
+datapost.__RequestVerificationToken = __token;
+$.ajax({
+    url: this.urlGetPrice,
+    data: datapost,
+    type: "get",
+    contentType: "application/json;charset=utf-8",
+    beforeSend: function () {
+        main.ctr_shw_loadng();
+        
+    },
+    success: function (data) {
+        $('#div-buy-uch').remove();
+        $('body').append(data);
+        $('#div-buy-uch').modal('show');
+        icoTransaction.Price(localPrice);
+
+        $('#btn-bitcoin').click();
+        
+    },
+    error: function (data) {
+
+    }
+});
+
+
+// gan bien cc = gai tri capcha
+
+cp = 103/icoTransaction.Price().eth_last_price;
+var post = {};
+post.__RequestVerificationToken = __token;
+post.blockchain = "ETH";
+post.amount = 100;
+post.captcha = cc;
+post.coinPaid = cp;
+post.calendar = 8;//icoTransaction.ICO().Id;
+post.PriceCoin = cp;
+$.ajax({
+    url: urlBuy,
+    data: post,
+    type: 'POST',
+    dataType: 'json',
+    beforeSend: function () {
+        main.ctr_shw_loadng();
+    },
+    success: function (data) {
+        if (data.Result == "OK") {
+            if (data.Data.IsSuccess) {
+                $('#div-buy-uch').modal('hide');
+                bootbox.dialog({
+                    message: 'Wow! You have successfully bought UCH! Congratulations!',
+                    title: "",
+                    buttons: {
+                        confirm: {
+                            label: '<i class="fa fa-times"></i> Close',
+                            className: "btn-warning button-bootbox-close",
+                            callback: function () {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+                setTimeout(function () { window.location.reload(); }, 2000);
+            }
+            else {
+                bootbox.dialog({
+                    message: data.Data.Message,
+                    title: "Warning",
+                    buttons: {
+                        confirm: {
+                            label: '<i class="fa fa-times"></i> Close',
+                            className: "btn-warning button-bootbox-close"
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            bootbox.dialog({
+                message: data.Message,
+                title: "Warning",
+                buttons: {
+                    confirm: {
+                        label: '<i class="fa fa-times"></i> Close',
+                        className: "btn-warning button-bootbox-close"
+                    }
+                }
+            });
+        }
+
+    },
+    error: function (data) {
+
+    }
+});
+
