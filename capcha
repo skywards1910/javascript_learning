@@ -1,101 +1,67 @@
-         
-//init
-icoTransaction = new ICOTransaction();
-icoTransaction.init=({"Id":8,"TotalCoin":500000.000000000000000000,"SoldCoin":0.000000000000000000,"TimeICO":"\/Date(1512054000000)\/","TimeBuyICO":"\/Date(1512054000000)\/","OpenBuyTime":2,"OpenICOTime":false,"Price":1.03000,"Limit":200,"TimeLeft":27580.554667}, {"BTC":0.00000000,"ETH":0.28631236,"UCH":0.00000000,"USD":0.00000000,"BTCAddress":"1Ek5QXamaUDNrzEu6zcSkQKV4aJtT2n3NY","ETHAddress":"0x67aaea012efc0c9a3fdd3aa44971580e34853ef9","UCHAddress":"Ua4yV8fbjRsJsCUMwAPPem9b3E5iFV18JH","SecondPass":false})
-//SHOW DIALOG
-var datapost = {};
-datapost.__RequestVerificationToken = __token;
-$.ajax({
-    url: this.urlGetPrice,
-    data: datapost,
-    type: "get",
-    contentType: "application/json;charset=utf-8",
-    beforeSend: function () {
-        main.ctr_shw_loadng();
-        
+### Keybase proof
+
+I hereby claim:
+
+  * I am jacky on github.
+  * I am jacky88 (https://keybase.io/jacky88) on keybase.
+  * I have a public key ASABA5e_15dcsYTrYCGritTTzEpU_qIump0S4h3jkdY4Kwo
+
+To claim this, I am signing this object:
+
+```json
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120010397bfd7975cb184eb6021ab8ad4d3cc4a54fea22e9a9d12e21de391d6382b0a",
+      "host": "keybase.io",
+      "kid": "0120010397bfd7975cb184eb6021ab8ad4d3cc4a54fea22e9a9d12e21de391d6382b0a",
+      "uid": "0b6e8b0fafe1a055f8ba08e9892db919",
+      "username": "jacky88"
     },
-    success: function (data) {
-        $('#div-buy-uch').remove();
-        $('body').append(data);
-        $('#div-buy-uch').modal('show');
-        icoTransaction.Price(localPrice);
-
-        $('#btn-bitcoin').click();
-        
+    "merkle_root": {
+      "ctime": 1568101625,
+      "hash": "5fc2034e35230c1875825e52c94bc5b453a6cca18efaf6643faa0961f207e2a73d00c222a9e503dcf081213a669a1fa7463e67a5c82a6a90dd8cb72ce5753594",
+      "hash_meta": "39ab01361c746658feb9c0af4f3463ec7316ba02e3d6b790caaf4bafd1dcf74f",
+      "seqno": 6343571
     },
-    error: function (data) {
-
-    }
-});
-
-
-// gan bien cc = gai tri capcha
-
-cp = 103/icoTransaction.Price().eth_last_price;
-var post = {};
-post.__RequestVerificationToken = __token;
-post.blockchain = "ETH";
-post.amount = 100;
-post.captcha = cc;
-post.coinPaid = cp;
-post.calendar = 8;//icoTransaction.ICO().Id;
-post.PriceCoin = cp;
-$.ajax({
-    url: urlBuy,
-    data: post,
-    type: 'POST',
-    dataType: 'json',
-    beforeSend: function () {
-        main.ctr_shw_loadng();
+    "service": {
+      "entropy": "3OKSqCwJh41Fa0Cd7B6j54US",
+      "name": "github",
+      "username": "jacky"
     },
-    success: function (data) {
-        if (data.Result == "OK") {
-            if (data.Data.IsSuccess) {
-                $('#div-buy-uch').modal('hide');
-                bootbox.dialog({
-                    message: 'Wow! You have successfully bought UCH! Congratulations!',
-                    title: "",
-                    buttons: {
-                        confirm: {
-                            label: '<i class="fa fa-times"></i> Close',
-                            className: "btn-warning button-bootbox-close",
-                            callback: function () {
-                                window.location.reload();
-                            }
-                        }
-                    }
-                });
-                setTimeout(function () { window.location.reload(); }, 2000);
-            }
-            else {
-                bootbox.dialog({
-                    message: data.Data.Message,
-                    title: "Warning",
-                    buttons: {
-                        confirm: {
-                            label: '<i class="fa fa-times"></i> Close',
-                            className: "btn-warning button-bootbox-close"
-                        }
-                    }
-                });
-            }
-        }
-        else {
-            bootbox.dialog({
-                message: data.Message,
-                title: "Warning",
-                buttons: {
-                    confirm: {
-                        label: '<i class="fa fa-times"></i> Close',
-                        className: "btn-warning button-bootbox-close"
-                    }
-                }
-            });
-        }
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "4.4.0"
+  },
+  "ctime": 1568101645,
+  "expire_in": 504576000,
+  "prev": "7a4b6d27a16ab6262d69a7283df7b8873fd5c21c3045f622ae0affd953695630",
+  "seqno": 4,
+  "tag": "signature"
+}
+```
 
-    },
-    error: function (data) {
+with the key [ASABA5e_15dcsYTrYCGritTTzEpU_qIump0S4h3jkdY4Kwo](https://keybase.io/jacky88), yielding the signature:
 
-    }
-});
+```
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgAQOXv9eXXLGE62Ahq4rU08xKVP6iLpqdEuId45HWOCsKp3BheWxvYWTESpcCBMQgekttJ6FqtiYtaacoPfe4hz/VwhwwRfYirgr/2VNpVjDEIJ99lXVhI7AaEZTophtdCWSXVcVRUsyfiHhKDL1S/sI8AgHCo3NpZ8RAfD+QkUutcIH4DFvNuT/H2nou8A4jL3yAzOMLTEVJF4gJLfhXmvLJstgiDsw1536naGAHgbo+AQBES+eaYD7UAqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEINHi/Pl4TfUOWDrrB+wvB8Shhv1QuJfwcRK1Ocruxk9Jo3RhZ80CAqd2ZXJzaW9uAQ==
 
+```
+
+And finally, I am proving ownership of the github account by posting this as a gist.
+
+### My publicly-auditable identity:
+
+https://keybase.io/jacky88
+
+### From the command line:
+
+Consider the [keybase command line program](https://keybase.io/download).
+
+```bash
+# look me up
+keybase id jacky88
+```
